@@ -13,9 +13,9 @@ import javax.swing.WindowConstants;
 
 import com.germistry.spriteGarden.entity.mob.Player;
 import com.germistry.spriteGarden.graphics.Screen;
-import com.germistry.spriteGarden.graphics.gui.MainMenu;
-import com.germistry.spriteGarden.graphics.gui.NewGameMenu;
-import com.germistry.spriteGarden.graphics.gui.PauseMenu;
+import com.germistry.spriteGarden.graphics.gui.menu.MainMenu;
+import com.germistry.spriteGarden.graphics.gui.menu.NewGameMenu;
+import com.germistry.spriteGarden.graphics.gui.menu.PauseMenu;
 import com.germistry.spriteGarden.graphics.hud.HUDManager;
 import com.germistry.spriteGarden.input.Keyboard;
 import com.germistry.spriteGarden.input.Mouse;
@@ -23,7 +23,7 @@ import com.germistry.spriteGarden.level.Level;
 import com.germistry.spriteGarden.level.TileCoord;
 
 
-public class SpriteGardenGame extends Canvas implements Runnable {
+public class Main extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private static int width = 340 - 80;
@@ -61,7 +61,7 @@ public class SpriteGardenGame extends Canvas implements Runnable {
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	
-	public SpriteGardenGame() {
+	public Main() {
 		Dimension size = new Dimension(width * scale + (80 * 3), height * scale);
 		setPreferredSize(size);
 		
@@ -143,23 +143,34 @@ public class SpriteGardenGame extends Canvas implements Runnable {
 	
 	public void update() {
 		key.update();
-		if(State == STATE.MAINMENU) {
+		switch(State) {
+		case MAINMENU:
 			mainMenu.update();
-		}
-		if(State == STATE.PAUSEMENU) {
+			break;
+		case PAUSEMENU:
+			pauseMenu.update();
+			break;
+		case NEWGAMEMENU:
 			newGameMenu.update();
-		}
-		if(State == STATE.NEWGAMEMENU) {
-			newGameMenu.update();
-		}
-		if(State == STATE.PLAY) {
+			break;
+		case LOADGAME:
+			
+			break;
+		case HOWTOPLAY:
+			
+			break;
+		case ABOUT:
+			
+			break;
+		case PLAY:
 			if(!key.escape) {
 				level.update();
 				hud.update();
 			} else {
 				State = STATE.PAUSEMENU;
 			}	
-		}
+			break;
+		}	
 		System.out.println(State);
 	}
 	
@@ -173,45 +184,49 @@ public class SpriteGardenGame extends Canvas implements Runnable {
 		
 		Graphics g = bs.getDrawGraphics();
 		screen.graphics(g);
-		
-		if(State == STATE.MAINMENU) {
+		switch(State) {
+		case MAINMENU:
 			mainMenu.render(screen);
-		}
-		if(State == STATE.PAUSEMENU) {
+			break;
+		case PAUSEMENU:
 			pauseMenu.render(screen);
-		}
-		if(State == STATE.NEWGAMEMENU) {
+			break;
+		case NEWGAMEMENU:
 			newGameMenu.render(screen);
-		}
-		if(State == STATE.LOADGAME) {
+			break;
+		case LOADGAME:
 			
-		}
-		if(State == STATE.HOWTOPLAY) {
+			break;
+		case HOWTOPLAY:
 			
-		}
-		if(State == STATE.ABOUT) {
+			break;
+		case ABOUT:
 			
-		}
-		if(State == STATE.PLAY && !key.escape) {
-			double xScroll = player.getX() - screen.width / 2;
-			double yScroll = player.getY() - screen.height / 2;
-			level.setScroll((int)xScroll, (int)yScroll);
-			level.render(screen);
-			for(int i = 0; i < pixels.length; i++) {
-				pixels[i] = screen.pixels[i];
-			}
-			g.drawImage(image, 0, 0, width * scale, height * scale, null);
-			hud.render(g);
-		}
-		
+			break;
+		case PLAY:
+			if(!key.escape) {
+				double xScroll = player.getX() - screen.width / 2;
+				double yScroll = player.getY() - screen.height / 2;
+				level.setScroll((int)xScroll, (int)yScroll);
+				level.render(screen);
+				for(int i = 0; i < pixels.length; i++) {
+					pixels[i] = screen.pixels[i];
+				}
+				g.drawImage(image, 0, 0, width * scale, height * scale, null);
+				hud.render(g);
+			} else {
+				State = STATE.PAUSEMENU;
+			}	
+			break;
+		}	
 		g.dispose();
 		bs.show();
 	}
 	
 	public static void main(String[] args) {
-		SpriteGardenGame  game = new SpriteGardenGame(); 
+		Main  game = new Main(); 
 		game.frame.setResizable(false);
-		game.frame.setTitle(SpriteGardenGame.title);
+		game.frame.setTitle(Main.title);
 		game.frame.add(game);
 		game.frame.pack();
 		game.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -241,5 +256,6 @@ public class SpriteGardenGame extends Canvas implements Runnable {
 	public static HUDManager getHUDManager() {
 		return hud;
 	}
+	
 
 }

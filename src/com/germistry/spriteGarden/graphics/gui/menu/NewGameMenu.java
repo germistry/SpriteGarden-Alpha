@@ -1,6 +1,6 @@
-package com.germistry.spriteGarden.graphics.gui;
+package com.germistry.spriteGarden.graphics.gui.menu;
 
-import com.germistry.spriteGarden.SpriteGardenGame;
+import com.germistry.spriteGarden.Main;
 import com.germistry.spriteGarden.graphics.Screen;
 import com.germistry.spriteGarden.input.Keyboard;
 import com.germistry.spriteGarden.input.Mouse;
@@ -12,27 +12,32 @@ public class NewGameMenu extends Menu {
 			"Return to Main",
 			"How to Play", 
 			"About" };
+	private int clickRate = 0;
 	
 	public NewGameMenu(Keyboard input) {
 		super(input);
+		clickRate = Mouse.CLICK_RATE;
 	}
 
 	public void update() {
 		int x = Mouse.getX();
 		int y = Mouse.getY();
+		if(clickRate > 0) clickRate--;	
 		//330, 318, 390, 46 newgame (play in essence at the moment)
 		//330, 378, 390, 46 loadgame 
 		//330, 438, 390, 46 how to
 		//330, 498, 390, 46 about
 		
 		if(x >= 330 && x <= 720) {
-			if(y >= 318 && y <= 364 && Mouse.getMouseButton() == 1) {
-				SpriteGardenGame.State = SpriteGardenGame.STATE.PLAY;
+			if(y >= 318 && y <= 364 && Mouse.getMouseButton() == 1 && clickRate <= 0) {
+				Main.State = Main.STATE.PLAY;
+				clickRate = Mouse.CLICK_RATE;
 			}
 		}
 		if(x >= 330 && x <= 720) {
-			if(y >= 378 && y <= 424 && Mouse.getMouseButton() == 1) {
-				SpriteGardenGame.State = SpriteGardenGame.STATE.MAINMENU;
+			if(y >= 378 && y <= 424 && Mouse.getMouseButton() == 1 && clickRate <= 0) {
+				Main.State = Main.STATE.MAINMENU;
+				clickRate = Mouse.CLICK_RATE;
 			}
 		}
 	}

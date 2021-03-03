@@ -20,7 +20,7 @@ public class Kitty extends Mob{
 	private AnimatedSprite animatedSprite = kitty_down;
 	
 	private double xa = 0, ya = 0;
-	private double speed = 1;
+	private double speed = 0.8;
 	private int time = 0;
 	
 	private List<TileNode> path = null;
@@ -59,7 +59,7 @@ public class Kitty extends Mob{
 
 	public void render(Screen screen) {
 		sprite = animatedSprite.getSprite();
-		screen.renderMob32((int)(x - 16), (int)(y - 16), this);
+		screen.renderMob((int)(x), (int)(y), this);
 	}
 	
 	private void move() {
@@ -120,12 +120,12 @@ public class Kitty extends Mob{
 		
 		while (xpixel != 0) {
 			if (Math.abs(xpixel) > 1) {
-				if (!collision(abs(xpixel), ypixel)) {
+				if (!collision(abs(xpixel), ypixel, this.getSpriteSize())) {
 					this.x += abs(xpixel);
 				}
 				xpixel -= abs(xpixel);
 			} else {
-				if (!collision(abs(xpixel), ypixel)) {
+				if (!collision(abs(xpixel), ypixel, this.getSpriteSize())) {
 					this.x += xpixel;
 				}
 				xpixel = 0;
@@ -134,12 +134,12 @@ public class Kitty extends Mob{
 		
 		while (ypixel != 0) {
 			if (Math.abs(ypixel) > 1) {
-				if (!collision(xpixel, abs(ypixel))) {
+				if (!collision(xpixel, abs(ypixel), this.getSpriteSize())) {
 					this.y += abs(ypixel);
 				}
 				ypixel -= abs(ypixel);
 			} else {
-				if (!collision(xpixel, abs(ypixel))) {
+				if (!collision(xpixel, abs(ypixel), this.getSpriteSize())) {
 					this.y += ypixel;
 				}
 				ypixel = 0;
@@ -150,8 +150,8 @@ public class Kitty extends Mob{
 		if(value < 0) return -1;
 		else return 1;
 	}
-	
-	private boolean collision(double xpixel, double ypixel) {
+	//TODO Implement better collision detection for tiles & entities - use a bounding box 
+	private boolean collision(double xpixel, double ypixel, int size) {
 		boolean solid = false;
 		for(int corner = 0; corner < 4; corner++) {
 			double xt = ((x + xpixel) - corner % 2 * 8 + 4)/16;

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.germistry.spriteGarden.entity.Entity;
-import com.germistry.spriteGarden.entity.mob.Mob;
 import com.germistry.spriteGarden.entity.mob.Player;
 import com.germistry.spriteGarden.entity.particle.Particle;
 import com.germistry.spriteGarden.entity.projectile.Projectile;
@@ -153,9 +152,10 @@ public class Level {
 		for(int corner = 0; corner < 4; corner++) {
 			int xt = (x - corner % 2 * size + xOffset) >> 4;
 			int yt = (y - corner / 2 * size + yOffset) >> 4;
+			System.out.println(x + ", " + y + "/ " + size + "/ " + xOffset + ", " + yOffset);
 			if (getTile(xt, yt).solid()) solid = true;
 		}
-		
+		 
 		return solid;
 	}
 	//The A* search algorithm for working out best path. Uses private methods vectorInList & getDistance, 

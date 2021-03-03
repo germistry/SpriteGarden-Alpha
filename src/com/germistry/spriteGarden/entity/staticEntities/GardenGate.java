@@ -1,10 +1,10 @@
-package com.germistry.spriteGarden.entity.mob;
+package com.germistry.spriteGarden.entity.staticEntities;
 
 import com.germistry.spriteGarden.graphics.AnimatedSprite;
 import com.germistry.spriteGarden.graphics.Screen;
 import com.germistry.spriteGarden.graphics.SpriteSheet;
 
-public class GardenGate extends Mob {
+public class GardenGate extends StaticEntity {
 
 	private boolean open = false; 
 	private AnimatedSprite gardenGate_shut = new AnimatedSprite(SpriteSheet.gardenGate_shut, 64, 64, 3);
@@ -30,6 +30,6 @@ public class GardenGate extends Mob {
 	
 	public void render(Screen screen) {
 		sprite = animatedSprite.getSprite();
-		screen.renderMob64((int)x, (int)y, this);
+		screen.renderStaticEntity((int)x, (int)y, this);
 	}
 }

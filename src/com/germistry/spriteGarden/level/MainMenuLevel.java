@@ -28,9 +28,6 @@ public class MainMenuLevel extends Level {
 		for (int i = 0; i < 10; i++) {
 			add(new LadyBeetle((random.nextInt(32) + 16), (random.nextInt(32) + 16)));
 		}
-		
-		
-		
 		//render entities that player can walk behind after the player
 	}
 }

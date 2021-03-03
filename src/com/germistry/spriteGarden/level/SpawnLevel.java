@@ -6,9 +6,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.germistry.spriteGarden.entity.mob.Bee;
-import com.germistry.spriteGarden.entity.mob.GardenGate;
 import com.germistry.spriteGarden.entity.mob.Kitty;
 import com.germistry.spriteGarden.entity.mob.LadyBeetle;
+import com.germistry.spriteGarden.entity.staticEntities.GardenGate;
 
 public class SpawnLevel extends Level {
 
@@ -30,14 +30,14 @@ public class SpawnLevel extends Level {
 			System.out.println("Error: Could not load spawn level image.");
 		}
 		add(new GardenGate(80, 20));
-		for (int i = 0; i < 20; i++) {
-			add(new LadyBeetle((random.nextInt(76) + 26), (random.nextInt(76) + 26)));
+		for (int i = 0; i < 50; i++) {
+			add(new LadyBeetle((random.nextInt(70) + 30), (random.nextInt(70) + 30)));
 		}
 		for (int i = 0; i < 2; i++) {
-			add(new Kitty((random.nextInt(74) + 28), (random.nextInt(74) + 28)));
+			add(new Kitty((random.nextInt(70) + 30), (random.nextInt(70) + 30)));
 		}
 		for (int i = 0; i < 2; i++) {
-			add(new Bee((random.nextInt(76) + 26), (random.nextInt(76) + 26)));
+			add(new Bee((random.nextInt(70) + 30), (random.nextInt(70) + 30)));
 		}
 		
 		//render entities that player can walk behind after the player

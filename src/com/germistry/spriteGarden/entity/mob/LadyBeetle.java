@@ -53,7 +53,7 @@ public class LadyBeetle extends Mob {
 
 	public void render(Screen screen) {
 		sprite = animatedSprite.getSprite();
-		screen.renderMob16((int)(x - 8), (int)(y - 8), this);
+		screen.renderMob((int)(x), (int)(y), this);
 	}
 	private void move() {
 		if (time % (random.nextInt(50) + 30) == 0) {

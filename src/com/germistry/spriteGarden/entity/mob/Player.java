@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.germistry.spriteGarden.SpriteGardenGame;
-import com.germistry.spriteGarden.SpriteGardenGame.STATE;
+import com.germistry.spriteGarden.Main;
+import com.germistry.spriteGarden.Main.STATE;
 import com.germistry.spriteGarden.entity.projectile.ArrowProjectile;
 import com.germistry.spriteGarden.entity.projectile.Projectile;
 //import com.germistry.spriteGarden.entity.projectile.SparklesProjectile;
@@ -63,7 +63,7 @@ public class Player extends Mob {
 		this.input = input;
 		fireRate = ArrowProjectile.FIRE_RATE;
 		clickRate = Mouse.CLICK_RATE;
-		hud = SpriteGardenGame.getHUDManager();
+		hud = Main.getHUDManager();
 		HUDPanel panel = new HUDPanel(new Vector2i(780, 0), new Vector2i(240, 576));
 		hud.addPanel(panel);
 		HUDPanel minimapHolder = new HUDPanel(new Vector2i(786, 8), new Vector2i(228, 228));
@@ -238,7 +238,7 @@ public class Player extends Mob {
 	
 	public void render(Screen screen) {
 		sprite = animatedSprite.getSprite();
-		screen.renderMob48((int)(x - 24), (int)(y - 24), this);
+		screen.renderMob((int)(x - 24), (int)(y - 24), this);
 	}
 
 	private void clear() {
@@ -249,11 +249,11 @@ public class Player extends Mob {
 	}
 	
 	private void updateFireProjectile() {
-		if(SpriteGardenGame.State == STATE.PLAY) {
+		if(Main.State == STATE.PLAY) {
 			if(Mouse.getX() > 780) return;
 			if(Mouse.getMouseButton() == 3 && fireRate <= 0) {
-				double dx = Mouse.getX() - SpriteGardenGame.getWidthScaled() / 2;  	//adjacent
-				double dy = Mouse.getY() - SpriteGardenGame.getHeightScaled() / 2;	//opposite
+				double dx = Mouse.getX() - Main.getWidthScaled() / 2;  	//adjacent
+				double dy = Mouse.getY() - Main.getHeightScaled() / 2;	//opposite
 				double fireDirection = Math.atan2(dy, dx);
 				fireProjectile(x, y, fireDirection);
 				fireRate = ArrowProjectile.FIRE_RATE;	
@@ -263,10 +263,10 @@ public class Player extends Mob {
 	//TODO basic editor need logic for tiles that can be placed by player and where they can be placed. 
 	//TODO And then WHAT can grow on them.
 	private void getTileClicked() {
-		if(SpriteGardenGame.State == STATE.PLAY) {
+		if(Main.State == STATE.PLAY) {
 			if(Mouse.getMouseButton() == 1 && clickRate <= 0) {
-				int xMouse = (int)((getX() - SpriteGardenGame.getRawWidth() / 2) + Mouse.getX() / SpriteGardenGame.getRawScale()) >> 4;
-				int yMouse = (int)((getY() - SpriteGardenGame.getRawHeight() / 2) + Mouse.getY() / SpriteGardenGame.getRawScale()) >> 4;
+				int xMouse = (int)((getX() - Main.getRawWidth() / 2) + Mouse.getX() / Main.getRawScale()) >> 4;
+				int yMouse = (int)((getY() - Main.getRawHeight() / 2) + Mouse.getY() / Main.getRawScale()) >> 4;
 		
 				selectedTile = level.getTile(xMouse, yMouse);
 				clickRate = Mouse.CLICK_RATE;

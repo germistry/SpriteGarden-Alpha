@@ -21,7 +21,7 @@ public class Bee extends Mob {
 	private AnimatedSprite animatedSprite = bee_down;
 	
 	private double xa = 0, ya = 0;
-	private double speed = 1;
+	private double speed = 0.8;
 	private int time = 0;
 	
 	private List<TileNode> path = null;
@@ -61,7 +61,7 @@ public class Bee extends Mob {
 	public void render(Screen screen) {
 		//Debug.drawRect(screen, 40*16, 40*16, 100, 40, 0xff00ff99, true);
 		sprite = animatedSprite.getSprite();
-		screen.renderMob16((int)(x - 8), (int)(y - 8), this);
+		screen.renderMob((int)(x), (int)(y), this);
 	}
 	private void move() {
 		List<Player> players = level.getPlayers(this, 10);

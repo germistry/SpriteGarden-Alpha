@@ -45,7 +45,7 @@ protected final Random random = new Random();
 	}
 	
 	public void render(Screen screen) {
-		screen.renderProjectile((int)x, (int)y - 2, this);
+		screen.renderProjectile((int)x, (int)y, this);
 	}
 	
 	private double distance() {

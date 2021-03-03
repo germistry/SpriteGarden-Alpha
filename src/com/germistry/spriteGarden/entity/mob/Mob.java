@@ -34,12 +34,12 @@ public abstract class Mob extends Entity {
 		
 		while (xpixel != 0) {
 			if (Math.abs(xpixel) > 1) {
-				if (!collision(abs(xpixel), ypixel)) {
+				if (!collision(abs(xpixel), ypixel, this.getSpriteSize())) {
 					this.x += abs(xpixel);
 				}
 				xpixel -= abs(xpixel);
 			} else {
-				if (!collision(abs(xpixel), ypixel)) {
+				if (!collision(abs(xpixel), ypixel, this.getSpriteSize())) {
 					this.x += xpixel;
 				}
 				xpixel = 0;
@@ -48,12 +48,12 @@ public abstract class Mob extends Entity {
 		
 		while (ypixel != 0) {
 			if (Math.abs(ypixel) > 1) {
-				if (!collision(xpixel, abs(ypixel))) {
+				if (!collision(xpixel, abs(ypixel), this.getSpriteSize())) {
 					this.y += abs(ypixel);
 				}
 				ypixel -= abs(ypixel);
 			} else {
-				if (!collision(xpixel, abs(ypixel))) {
+				if (!collision(xpixel, abs(ypixel), this.getSpriteSize())) {
 					this.y += ypixel;
 				}
 				ypixel = 0;
@@ -75,11 +75,11 @@ public abstract class Mob extends Entity {
 		level.add(p);
 	}
 	
-	private boolean collision(double xpixel, double ypixel) {
+	private boolean collision(double xpixel, double ypixel, int size) {
 		boolean solid = false;
 		for(int corner = 0; corner < 4; corner++) {
-			double xt = ((x + xpixel) - corner % 2 * 8 - 4)/16;
-			double yt = ((y + ypixel) - corner / 2 * 8)/16;
+			double xt = ((x + xpixel) - corner % size + 1)/16;
+			double yt = ((y + ypixel) - corner / size + 1)/16;
 			int ix = (int) Math.ceil(xt);
 			int iy = (int) Math.ceil(yt);
 			if(corner % 2 == 0) ix =(int) Math.floor(xt);
@@ -92,5 +92,13 @@ public abstract class Mob extends Entity {
 	public Sprite getSprite( ) {
 		return sprite;
 	}
-	
+	public int getSpriteSize() {
+		return sprite.SIZE;
+	}
+	public int getSpriteWidth() {
+		return sprite.getWidth();
+	}
+	public int getSpriteHeight() {
+		return sprite.getHeight();
+	}
 }
