@@ -8,13 +8,6 @@ public abstract class StaticEntity extends Entity {
 
 	protected Sprite sprite;
 	
-	
-	
-	private int abs(double value) {
-		if(value < 0) return -1;
-		else return 1;
-	}
-	
 	public abstract void update();
 	
 	public abstract void render(Screen screen);

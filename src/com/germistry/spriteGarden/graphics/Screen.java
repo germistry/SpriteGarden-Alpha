@@ -5,6 +5,8 @@ import java.util.Random;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.TextField;
 
 import com.germistry.spriteGarden.entity.crops.Crop;
 import com.germistry.spriteGarden.entity.mob.Mob;
@@ -20,6 +22,7 @@ public class Screen {
 	public final int MAP_SIZE_MASK = MAP_SIZE - 1;
 	public int xOffset, yOffset;
 	private Graphics graphics;
+	
 
 	public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
 	private final int ALPHA_COL = 0xffff00ff;
@@ -232,10 +235,20 @@ public class Screen {
 		this.graphics.setColor(c);
 		this.graphics.fillRect(x, y, width, height);
 	}
-	//render an image as menu background
 	
+	//render an image like a button or background 
 	public void renderImage(Image image, int xOffset, int yOffset, int width, int height) {
 		this.graphics.drawImage(image, xOffset, yOffset, width, height, null);
+	}
+	
+	public void renderTextBox(String text, int xOffset, int yOffset, int fontSize, int fontStyle, int fontColour, int boxColour) {
+		Rectangle r = new Rectangle(xOffset, yOffset, 390, 46);
+		drawRect(xOffset, yOffset, r.width, r.height, boxColour);
+		renderText(text, xOffset, yOffset, fontSize, fontStyle, fontColour);
+	}
+		
+	public void testRender(TextField textfield) {
+		textfield.paint(graphics);
 	}
 	
 }

@@ -11,7 +11,6 @@ import com.germistry.spriteGarden.input.Keyboard;
 import com.germistry.spriteGarden.input.Mouse;
 
 public class MainMenu extends Menu {
-
 	
 	String[] options = { 
 			"New Game", 
@@ -39,10 +38,6 @@ public class MainMenu extends Menu {
 		int x = Mouse.getX();
 		int y = Mouse.getY();
 		if(clickRate > 0) clickRate--;		
-		//330, 318, 390, 46 new game
-		//330, 378, 390, 46  load saved 424
-		//330, 438, 390, 46 how to
-		//330, 498, 390, 46 about
 		
 		if(x >= 310 && x <= 690) {
 			if(y >= 318 && y <= 364 && Mouse.getMouseButton() == 1 && clickRate <= 0) {
@@ -52,7 +47,20 @@ public class MainMenu extends Menu {
 		}
 		if(x >= 310 && x <= 690) {
 			if(y >= 378 && y <= 424 && Mouse.getMouseButton() == 1 && clickRate <= 0) {
-				
+				Main.State = Main.STATE.LOADGAME;
+				clickRate = Mouse.CLICK_RATE;
+			}
+		}
+		if(x >= 310 && x <= 690) {
+			if(y >= 438 && y <= 484 && Mouse.getMouseButton() == 1 && clickRate <= 0) {
+				Main.State = Main.STATE.HOWTOPLAY;
+				clickRate = Mouse.CLICK_RATE;
+			}
+		}
+		if(x >= 310 && x <= 690) {
+			if(y >= 498 && y <= 544 && Mouse.getMouseButton() == 1 && clickRate <= 0) {
+				Main.State = Main.STATE.ABOUT;
+				clickRate = Mouse.CLICK_RATE;
 			}
 		}
 	}
@@ -66,7 +74,5 @@ public class MainMenu extends Menu {
 		for (int i = 0; i < options.length; i++) {
 			screen.renderText(options[i], 330, 351 + i * 60, 36, 1, 0x000000);
 		}
-		
 	}
-	
 }

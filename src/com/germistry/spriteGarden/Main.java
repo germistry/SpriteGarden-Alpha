@@ -1,5 +1,6 @@
 package com.germistry.spriteGarden;
 
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -9,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import com.germistry.spriteGarden.entity.mob.Player;
@@ -33,7 +35,7 @@ public class Main extends Canvas implements Runnable {
 	public static String title = "Sprite Garden";
 	
 	private Thread gameThread;
-	private JFrame frame;;
+	private JFrame frame;
 	private Screen screen;
 	private Keyboard key;
 	
@@ -49,7 +51,8 @@ public class Main extends Canvas implements Runnable {
 	public static enum STATE {
 		MAINMENU,
 		PAUSEMENU,
-		NEWGAMEMENU, 
+		NEWGAMEMENU,
+		SAVEGAME,
 		LOADGAME,
 		HOWTOPLAY,
 		ABOUT,
@@ -67,10 +70,11 @@ public class Main extends Canvas implements Runnable {
 		
 		screen = new Screen(width, height);
 		frame = new JFrame();
+		
 		key = new Keyboard();
 		
 		//game entry point
-		setStartMenu();
+		setMenus();
 		//new game lands on this level
 		initSpawnLevel();
 		
@@ -84,12 +88,12 @@ public class Main extends Canvas implements Runnable {
 		hud = new HUDManager();
 		level = Level.spawn;	
 		TileCoord playerSpawn = new TileCoord(64, 64);  
-		player = new Player("Germistry", playerSpawn.getX(), playerSpawn.getY(), key); 
+		player = new Player("New Player", playerSpawn.getX(), playerSpawn.getY(), key); 
 		level.add(player);
 		
 	}
 	
-	private void setStartMenu() {
+	private void setMenus() {
 		State = STATE.MAINMENU; 
 		mainMenu = new MainMenu(key);
 		pauseMenu = new PauseMenu(key);
@@ -153,6 +157,9 @@ public class Main extends Canvas implements Runnable {
 		case NEWGAMEMENU:
 			newGameMenu.update();
 			break;
+		case SAVEGAME:
+			
+			break;
 		case LOADGAME:
 			
 			break;
@@ -171,7 +178,7 @@ public class Main extends Canvas implements Runnable {
 			}	
 			break;
 		}	
-		System.out.println(State);
+		//System.out.println(State);
 	}
 	
 	public void render() {
@@ -181,18 +188,27 @@ public class Main extends Canvas implements Runnable {
 			return;
 		}
 		screen.clear();
-		
-		Graphics g = bs.getDrawGraphics();
+		Graphics g = bs.getDrawGraphics();	
 		screen.graphics(g);
+		
 		switch(State) {
 		case MAINMENU:
 			mainMenu.render(screen);
+			g.dispose();
+			bs.show();
 			break;
 		case PAUSEMENU:
 			pauseMenu.render(screen);
+			g.dispose();
+			bs.show();
 			break;
 		case NEWGAMEMENU:
 			newGameMenu.render(screen);
+			g.dispose();
+			bs.show();
+			break;
+		case SAVEGAME:
+			
 			break;
 		case LOADGAME:
 			
@@ -214,20 +230,26 @@ public class Main extends Canvas implements Runnable {
 				}
 				g.drawImage(image, 0, 0, width * scale, height * scale, null);
 				hud.render(g);
+				g.dispose();
+				bs.show();
 			} else {
 				State = STATE.PAUSEMENU;
+				g.dispose();
+				bs.show();
 			}	
 			break;
 		}	
-		g.dispose();
-		bs.show();
+		
 	}
 	
 	public static void main(String[] args) {
 		Main  game = new Main(); 
 		game.frame.setResizable(false);
 		game.frame.setTitle(Main.title);
-		game.frame.add(game);
+		JPanel gamePanel = new JPanel();
+		gamePanel.setLayout(new BorderLayout());
+		gamePanel.add(game, BorderLayout.CENTER);
+		game.frame.setContentPane(gamePanel);
 		game.frame.pack();
 		game.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		game.frame.setLocationRelativeTo(null);  //centres frame

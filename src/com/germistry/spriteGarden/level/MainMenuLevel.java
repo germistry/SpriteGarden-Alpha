@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 
 import com.germistry.spriteGarden.entity.mob.LadyBeetle;
 
+//TODO render a level as a background?
 public class MainMenuLevel extends Level {
 	
 	public MainMenuLevel(String path) {

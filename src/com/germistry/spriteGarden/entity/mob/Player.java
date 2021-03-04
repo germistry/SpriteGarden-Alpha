@@ -33,7 +33,7 @@ public class Player extends Mob {
 	private int animate = 0;
 	private int fireRate = 0, clickRate = 0;
 	private String name;
-	private int experience;  // player will get experience when they sell crop produce? Enough get them to next level - better garden/more money
+	//private int experience;  // player will get experience when they sell crop produce? Enough get them to next level - better garden/more money
 	
 	//probably want a 4th frame in animation so maybe 48, 48, 4
 	private AnimatedSprite defaultGirlPlayer_down = new AnimatedSprite(SpriteSheet.defaultGirlPlayer_down, 48, 48, 3);

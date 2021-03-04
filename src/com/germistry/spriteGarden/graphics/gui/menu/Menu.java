@@ -8,7 +8,7 @@ import com.germistry.spriteGarden.input.Keyboard;
 
 public class Menu {
 	
-	private Keyboard input; // will use this for player to enter their name
+	protected Keyboard input; // will use this for player to enter their name
 	protected Main game;
 	protected final Random random = new Random();
 	

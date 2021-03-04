@@ -10,9 +10,9 @@ import com.germistry.spriteGarden.entity.mob.Kitty;
 import com.germistry.spriteGarden.entity.mob.LadyBeetle;
 import com.germistry.spriteGarden.entity.staticEntities.GardenGate;
 
+//TODO next level logic
 public class SpawnLevel extends Level {
 
-	
 	public SpawnLevel(String path) {
 		super(path);
 	}

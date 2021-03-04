@@ -24,8 +24,7 @@ public class Carrots extends Crop {
 	}
 	
 	public void render(Screen screen) {
-		sprite = animatedSprite.getSprite();
-		//TODO Render method for static entities, crops, garden gate etc. 
-		//screen.renderMob64((int)x, (int)y, this);
+		sprite = animatedSprite.getSprite(); 
+		screen.renderCrop((int)x, (int)y, this);
 	}
 }
