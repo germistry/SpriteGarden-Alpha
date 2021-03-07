@@ -1,4 +1,4 @@
-package com.germistry.spriteGarden.graphics.hud.components;
+package com.germistry.spriteGarden.graphics.gui.hud.components;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -8,9 +8,9 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-import com.germistry.spriteGarden.graphics.hud.IHUDActionListener;
-import com.germistry.spriteGarden.graphics.hud.HUDComponent;
-import com.germistry.spriteGarden.graphics.hud.HUDPanel;
+import com.germistry.spriteGarden.graphics.gui.hud.HUDComponent;
+import com.germistry.spriteGarden.graphics.gui.hud.HUDPanel;
+import com.germistry.spriteGarden.graphics.gui.hud.IHUDActionListener;
 import com.germistry.spriteGarden.input.Mouse;
 import com.germistry.spriteGarden.utils.Vector2i;
 

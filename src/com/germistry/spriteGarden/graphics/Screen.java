@@ -5,10 +5,9 @@ import java.util.Random;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.TextField;
 
 import com.germistry.spriteGarden.entity.crops.Crop;
+import com.germistry.spriteGarden.entity.items.Item;
 import com.germistry.spriteGarden.entity.mob.Mob;
 import com.germistry.spriteGarden.entity.projectile.Projectile;
 import com.germistry.spriteGarden.entity.staticEntities.StaticEntity;
@@ -126,6 +125,23 @@ public class Screen {
 			}
 		}
 	}
+	//render crop
+	public void renderItem(int xpixel, int ypixel, Item item) {
+		xpixel -= xOffset;
+		ypixel -= yOffset;
+		for(int y = 0; y < item.getSpriteSize(); y++) {
+			int yabs = y + ypixel;
+			int ysprite = y;
+			for(int x = 0; x < item.getSpriteSize(); x++) {
+				int xabs = x + xpixel;
+				int xsprite = x;
+				if(xabs < -item.getSpriteSize() || xabs >= width || yabs < 0 || yabs >= height) break;
+				if(xabs < 0) xabs = 0;
+				int col = item.getSprite().pixels[xsprite + ysprite * item.getSpriteSize()];
+				if (col != ALPHA_COL) pixels[xabs + yabs * width] = col;
+			}
+		}
+	}
 
 	//render crop
 	public void renderCrop(int xpixel, int ypixel, Crop crop) {
@@ -239,16 +255,6 @@ public class Screen {
 	//render an image like a button or background 
 	public void renderImage(Image image, int xOffset, int yOffset, int width, int height) {
 		this.graphics.drawImage(image, xOffset, yOffset, width, height, null);
-	}
-	
-	public void renderTextBox(String text, int xOffset, int yOffset, int fontSize, int fontStyle, int fontColour, int boxColour) {
-		Rectangle r = new Rectangle(xOffset, yOffset, 390, 46);
-		drawRect(xOffset, yOffset, r.width, r.height, boxColour);
-		renderText(text, xOffset, yOffset, fontSize, fontStyle, fontColour);
-	}
-		
-	public void testRender(TextField textfield) {
-		textfield.paint(graphics);
 	}
 	
 }

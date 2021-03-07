@@ -10,6 +10,7 @@ public class WeedDirtPatchTile extends Tile {
 		super(sprite);
 		this.name = "Weed Dirt";
 		this.mapColour = Tile.col_weedDirtPatch;
+		this.tileId = 6;
 	}
 
 	public void render(int x, int y, Screen screen) {		

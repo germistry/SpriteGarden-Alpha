@@ -10,7 +10,7 @@ import com.germistry.spriteGarden.entity.mob.Kitty;
 import com.germistry.spriteGarden.entity.mob.LadyBeetle;
 import com.germistry.spriteGarden.entity.staticEntities.GardenGate;
 
-//TODO next level logic
+//TODO next level logic & saving / loading multiple maps
 public class SpawnLevel extends Level {
 
 	public SpawnLevel(String path) {
@@ -29,6 +29,7 @@ public class SpawnLevel extends Level {
 			e.printStackTrace();
 			System.out.println("Error: Could not load spawn level image.");
 		}
+		levelId = 0;
 		add(new GardenGate(80, 20));
 		for (int i = 0; i < 50; i++) {
 			add(new LadyBeetle((random.nextInt(70) + 30), (random.nextInt(70) + 30)));

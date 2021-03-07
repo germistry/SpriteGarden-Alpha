@@ -17,9 +17,11 @@ import com.germistry.spriteGarden.utils.Vector2i;
 public class Level {
 
 	protected int width, height;
+	//tiles Int for random level & loading maps saved to text files
 	protected int[] tilesInt;
 	//identifier for level colour values from the level map
 	protected int[] tiles;
+	protected int levelId;
 	protected final Random random = new Random();
 	private int xScroll, yScroll;
 	
@@ -39,25 +41,26 @@ public class Level {
 	
 	public static Level spawn = new SpawnLevel("/levelmaps/spawnLevel.png");
 	public static Level mainMenu = new MainMenuLevel("/levelmaps/mainMenuLevel.png");
+	public static Level loadedLevel = new LoadedLevel("test2");
 	
+	//This constructor used for loading saved maps from text files and also used for the random level that is depreciated. 
 	public Level(int width, int height) {
 		this.width = width;
 		this.height = height;
-		tilesInt = new int[width * height];
-		generateLevel();
+		tilesInt = new int[width * height]; //used for the random level & loadedLevel
+		
 	}
-	
+	//This constructor used for loading default maps from images.  
 	public Level(String path) {
 		loadLevel(path);
-		generateLevel();
 	}
-	
+	//generate was only used for the random level
 	protected void generateLevel() {
 	}
 	
 	protected void loadLevel(String path) {
 	}
-	
+		
 	public void update() {
 		for (int i = 0; i < entities.size(); i++) {
 			entities.get(i).update();
@@ -152,7 +155,7 @@ public class Level {
 		for(int corner = 0; corner < 4; corner++) {
 			int xt = (x - corner % 2 * size + xOffset) >> 4;
 			int yt = (y - corner / 2 * size + yOffset) >> 4;
-			System.out.println(x + ", " + y + "/ " + size + "/ " + xOffset + ", " + yOffset);
+			//System.out.println(x + ", " + y + "/ " + size + "/ " + xOffset + ", " + yOffset);
 			if (getTile(xt, yt).solid()) solid = true;
 		}
 		 
@@ -229,6 +232,10 @@ public class Level {
 		return (Player) players.get(0);
 	}
 	
+	public int getLevelId() {
+		return levelId;
+	}
+	
 	public List<Entity> getEntities(Entity entity, int radius) {
 		List<Entity> result = new ArrayList<Entity>();
 		int entityX = (int)entity.getX();
@@ -260,10 +267,11 @@ public class Level {
 		}
 		return result;
 	}
+	
 	//TODO change this get method to make more efficient, perhaps a switch, but keep static colour map in tiles as that is handy
 	public Tile getTile(int x, int y) {
 		if (x < 0 || y < 0 || x >= width || y >= height) return Tile.voidTile;
-		if (tiles[x + y * width] == Tile.col_gardenGateTile) return Tile.gardenGateTile;
+		if (tiles[x + y * width] == Tile.col_gardenGateTile || tiles[x + y * width] == Tile.id_gardenGateTile) return Tile.gardenGateTile;
 		if (tiles[x + y * width] == Tile.col_plainLightSand) return Tile.plainLightSand;
 		if (tiles[x + y * width] == Tile.col_detailLightSand) return Tile.detailLightSand;
 		if (tiles[x + y * width] == Tile.col_pittedLightSand) return Tile.pittedLightSand;
@@ -276,11 +284,11 @@ public class Level {
 		if (tiles[x + y * width] == Tile.col_detailMidGreenGrass) return Tile.detailMidGreenGrass;
 		if (tiles[x + y * width] == Tile.col_weedMidGreenGrass) return Tile.weedMidGreenGrass;
 		
-		if (tiles[x + y * width] == Tile.col_dirtPatch) return Tile.dirtPatch;
-		if (tiles[x + y * width] == Tile.col_detailDirtPatch) return Tile.detailDirtPatch;
-		if (tiles[x + y * width] == Tile.col_pittedDirtPatch) return Tile.pittedDirtPatch;
-		if (tiles[x + y * width] == Tile.col_weedDirtPatch) return Tile.weedDirtPatch;
-		if (tiles[x + y * width] == Tile.col_fertileDirt) return Tile.fertileDirt;
+		if (tiles[x + y * width] == Tile.col_dirtPatch || tiles[x + y * width] == Tile.id_dirtPatch) return Tile.dirtPatch;
+		if (tiles[x + y * width] == Tile.col_detailDirtPatch || tiles[x + y * width] == Tile.id_detailDirtPatch) return Tile.detailDirtPatch;
+		if (tiles[x + y * width] == Tile.col_pittedDirtPatch || tiles[x + y * width] == Tile.id_pittedDirtPatch) return Tile.pittedDirtPatch;
+		if (tiles[x + y * width] == Tile.col_weedDirtPatch || tiles[x + y * width] == Tile.id_weedDirtPatch) return Tile.weedDirtPatch;
+		if (tiles[x + y * width] == Tile.col_fertileDirt || tiles[x + y * width] == Tile.id_fertileDirt) return Tile.fertileDirt;
 		
 		if (tiles[x + y * width] == Tile.col_midGrGrassDirtEdgeTop) return Tile.midGrGrassDirtEdgeTop;
 		if (tiles[x + y * width] == Tile.col_midGrGrassDirtEdgeBase) return Tile.midGrGrassDirtEdgeBase;
@@ -325,4 +333,17 @@ public class Level {
 	public void setTile(int x, int y, Tile tile) {
 		tiles[x + y * width] = tile.getMapColour();
 	}
+	public void setTileById(int x, int y, int tileId) {
+		getTile(x,y).getTileId();
+	}
+	public int getWidth() {
+		return width;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public int getTileId(int x, int y) {
+		return getTile(x, y).getTileId();
+	}
+		
 }

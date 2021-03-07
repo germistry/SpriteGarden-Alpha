@@ -15,6 +15,7 @@ public class SpriteSheet {
 	private Sprite[] sprites;
 		
 	//create new instances of sprite sheets
+	public static SpriteSheet items = new SpriteSheet("/sprites/items.png", 512);
 	public static SpriteSheet terrain = new SpriteSheet("/sprites/terrain.png", 512);
 	public static SpriteSheet staticEntities = new SpriteSheet("/sprites/staticEntities.png", 512);
 	

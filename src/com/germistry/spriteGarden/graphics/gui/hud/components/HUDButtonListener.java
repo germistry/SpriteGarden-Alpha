@@ -1,4 +1,4 @@
-package com.germistry.spriteGarden.graphics.hud.components;
+package com.germistry.spriteGarden.graphics.gui.hud.components;
 
 public class HUDButtonListener {
 

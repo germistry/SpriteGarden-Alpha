@@ -15,10 +15,10 @@ import javax.swing.WindowConstants;
 
 import com.germistry.spriteGarden.entity.mob.Player;
 import com.germistry.spriteGarden.graphics.Screen;
+import com.germistry.spriteGarden.graphics.gui.hud.HUDManager;
 import com.germistry.spriteGarden.graphics.gui.menu.MainMenu;
 import com.germistry.spriteGarden.graphics.gui.menu.NewGameMenu;
 import com.germistry.spriteGarden.graphics.gui.menu.PauseMenu;
-import com.germistry.spriteGarden.graphics.hud.HUDManager;
 import com.germistry.spriteGarden.input.Keyboard;
 import com.germistry.spriteGarden.input.Mouse;
 import com.germistry.spriteGarden.level.Level;
@@ -52,10 +52,10 @@ public class Main extends Canvas implements Runnable {
 		MAINMENU,
 		PAUSEMENU,
 		NEWGAMEMENU,
-		SAVEGAME,
-		LOADGAME,
-		HOWTOPLAY,
-		ABOUT,
+		SAVEGAME,  //TODO Save Game Menu 
+		LOADGAME,  //TODO Load Game Menu
+		HOWTOPLAY, //TODO How to Play Menu
+		ABOUT,		//TODO About Menu 
 		PLAY
 	}
 
@@ -88,7 +88,7 @@ public class Main extends Canvas implements Runnable {
 		hud = new HUDManager();
 		level = Level.spawn;	
 		TileCoord playerSpawn = new TileCoord(64, 64);  
-		player = new Player("New Player", playerSpawn.getX(), playerSpawn.getY(), key); 
+		player = new Player("", playerSpawn.getX(), playerSpawn.getY(), key); 
 		level.add(player);
 		
 	}
@@ -161,7 +161,11 @@ public class Main extends Canvas implements Runnable {
 			
 			break;
 		case LOADGAME:
-			
+			level = Level.loadedLevel;	
+			TileCoord playerSpawn = new TileCoord(64, 64);  
+			player = new Player("", playerSpawn.getX(), playerSpawn.getY(), key); 
+			level.add(player);
+			State = STATE.PLAY;
 			break;
 		case HOWTOPLAY:
 			
@@ -279,5 +283,8 @@ public class Main extends Canvas implements Runnable {
 		return hud;
 	}
 	
+	public Level getLevel() {
+		return level;
+	}
 
 }

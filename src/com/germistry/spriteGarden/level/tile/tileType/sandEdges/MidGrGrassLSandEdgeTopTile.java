@@ -10,6 +10,7 @@ public class MidGrGrassLSandEdgeTopTile extends Tile {
 		super(sprite);
 		this.name = "MidGrGrass LSand Edge Right";
 		this.mapColour = Tile.col_midGrGrassLSandEdgeTop;
+		this.tileId = 44;
 	}
 
 	public void render(int x, int y, Screen screen) {		

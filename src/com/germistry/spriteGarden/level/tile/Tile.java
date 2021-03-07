@@ -57,6 +57,7 @@ public class Tile {
 	public Sprite sprite;
 	public String name;
 	protected int mapColour;
+	protected int tileId;
 
 	//base tiles & void tile
 	public static Tile gardenGateTile = new GardenGateTile(Sprite.gardenGateTile);	
@@ -117,6 +118,14 @@ public class Tile {
 	public static Tile smallPlant2MidGrGrass = new SmallPlantTile2MidGrGrass(Sprite.smallPlant2MidGrGrass);
 	
 	public static Tile voidTile = new VoidTile(Sprite.voidSprite);
+	
+	public static final int id_voidTile = 0;
+	public static final int id_gardenGateTile = 1;
+	public static final int id_detailDirtPatch = 2;
+	public static final int id_dirtPatch = 3;
+	public static final int id_fertileDirt = 4;
+	public static final int id_pittedDirtPatch = 5;
+	public static final int id_weedDirtPatch = 6;
 	
 	//colour map finals - SPAWN MAP
 	public static final int col_gardenGateTile = 0xff000010;
@@ -188,6 +197,12 @@ public class Tile {
 	public boolean growable() {
 		return false;
 	}
+	public boolean breakable() {
+		return false;
+	}
+	public Tile getReplacementTile() {
+		return this;
+	}
 	
 	public int getMapColour() {
 		return mapColour;
@@ -196,6 +211,12 @@ public class Tile {
 	public void setMapColour(int mapColour) {
 		this.mapColour = mapColour;
 	}
+
+	public int getTileId() {
+		return tileId;
+	}
+
+	
 	
 	
 }

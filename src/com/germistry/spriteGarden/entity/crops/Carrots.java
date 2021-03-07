@@ -16,6 +16,7 @@ public class Carrots extends Crop {
 		animatedSprite = gardenGate_shut;
 		growthState = 0;
 		resilience = 1;
+		
 	}
 	
 	public void update() {

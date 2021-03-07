@@ -14,17 +14,19 @@ import com.germistry.spriteGarden.entity.projectile.Projectile;
 import com.germistry.spriteGarden.graphics.AnimatedSprite;
 import com.germistry.spriteGarden.graphics.Screen;
 import com.germistry.spriteGarden.graphics.SpriteSheet;
-import com.germistry.spriteGarden.graphics.hud.HUDManager;
-import com.germistry.spriteGarden.graphics.hud.HUDPanel;
-import com.germistry.spriteGarden.graphics.hud.components.Button;
-import com.germistry.spriteGarden.graphics.hud.components.HUDButtonListener;
-import com.germistry.spriteGarden.graphics.hud.IHUDActionListener;
-import com.germistry.spriteGarden.graphics.hud.components.Label;
-import com.germistry.spriteGarden.graphics.hud.components.ProgressBar;
+import com.germistry.spriteGarden.graphics.gui.hud.HUDManager;
+import com.germistry.spriteGarden.graphics.gui.hud.HUDPanel;
+import com.germistry.spriteGarden.graphics.gui.hud.IHUDActionListener;
+import com.germistry.spriteGarden.graphics.gui.hud.components.Button;
+import com.germistry.spriteGarden.graphics.gui.hud.components.HUDButtonListener;
+import com.germistry.spriteGarden.graphics.gui.hud.components.Label;
+import com.germistry.spriteGarden.graphics.gui.hud.components.ProgressBar;
 import com.germistry.spriteGarden.input.Keyboard;
 import com.germistry.spriteGarden.input.Mouse;
+
 import com.germistry.spriteGarden.level.tile.Tile;
 import com.germistry.spriteGarden.utils.ImageUtils;
+
 import com.germistry.spriteGarden.utils.Vector2i;
 
 public class Player extends Mob {
@@ -32,7 +34,8 @@ public class Player extends Mob {
 	private Keyboard input;
 	private int animate = 0;
 	private int fireRate = 0, clickRate = 0;
-	private String name;
+	private static String name;
+	public static int Cash;
 	//private int experience;  // player will get experience when they sell crop produce? Enough get them to next level - better garden/more money
 	
 	//probably want a 4th frame in animation so maybe 48, 48, 4
@@ -45,24 +48,34 @@ public class Player extends Mob {
 	
 	private HUDManager hud;
 	private ProgressBar expBar;
-	private Button testBtn;
-	private BufferedImage image = null;
+	//private Button testBtn;
+	private BufferedImage inventoryBtnImage = null;
 	private Tile selectedTile;
-	
+	private Label selectedTileLbl;
+	private Label playerName;
 	//setting a local player, but will change for multiplayer
 	
 	public Player(Keyboard input) {
 		this.input = input;
-		
 	}
 
 	public Player(String name, int x, int y, Keyboard input) {
-		this.name = name;
+		Player.name = name;
 		this.x = x;
 		this.y = y;
 		this.input = input;
-		fireRate = ArrowProjectile.FIRE_RATE;
 		clickRate = Mouse.CLICK_RATE;
+		
+		setupPlayerHUD();
+		setupPlayerAttributes();
+		
+	}
+	private void setupPlayerAttributes() {
+		fireRate = ArrowProjectile.FIRE_RATE;
+		Cash = 50;
+		//experience = 0;
+	}
+	private void setupPlayerHUD() {
 		hud = Main.getHUDManager();
 		HUDPanel panel = new HUDPanel(new Vector2i(780, 0), new Vector2i(240, 576));
 		hud.addPanel(panel);
@@ -71,13 +84,14 @@ public class Player extends Mob {
 		hud.addPanel(minimapHolder);
 		
 		//player name label
-		Label playerName = new Label(new Vector2i(30, 268), name);
+		playerName = new Label(new Vector2i(30, 268), getName());
 		playerName.setColour(0xff27511C);
 		playerName.setFont(new Font("Courier New", Font.BOLD, 26));
 		playerName.shadow = true;
 		//playerName.shadowOffset = 4;
 		panel.addComponent(playerName);
 		
+		//TODO Setup actual experience logic  
 		expBar = new ProgressBar(new Vector2i(12, 280), new Vector2i(216, 22));
 		expBar.setColour(0xffABFF96);
 		expBar.setForegroundColour(0xffffff11);
@@ -88,59 +102,66 @@ public class Player extends Mob {
 		expLabel.setFont(new Font("Courier New", Font.BOLD, 14));
 		panel.addComponent(expLabel);
 	
-		testBtn = new Button(new Vector2i(12, 310), new Vector2i(120, 40), new IHUDActionListener() {
-			public void execute() {
-				System.out.println("Button pressed");
-			}
-		});
-		testBtn.setHUDButtonListener(new HUDButtonListener() {
-			public void pressed(Button testBtn) {
-				super.pressed(testBtn);
-				testBtn.executeAction();
-				testBtn.ignoreNextPress();
-			}
-		});
-		testBtn.setText("A Button");
-		panel.addComponent(testBtn);
-		
+		//Inventory Button
 		try {
 			//IMPORTANT!!!! These images need to be type 6 - not 13 like the mob and players sheets, make sure 
 			//in paint.net that these are saved as 32 bit depth!!!!! not a random type!
-			image = ImageIO.read(getClass().getResource("/images/imageButton.png"));
+			inventoryBtnImage = ImageIO.read(getClass().getResource("/images/inventoryBtn.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
 		
-		Button buttonImage = new Button(new Vector2i(12, 400), image, new IHUDActionListener() {
+		Button inventoryBtn = new Button(new Vector2i(12, 310), inventoryBtnImage, new IHUDActionListener() {
 			public void execute() {
+				//TODO open inventory action
 				System.out.println("Button pressed");
+				
 			}
 		});
-		buttonImage.setHUDButtonListener(new HUDButtonListener() {
+		inventoryBtn.setHUDButtonListener(new HUDButtonListener() {
 			public void entered(Button button) {
-				button.setImage(ImageUtils.changeBrightness(image, 100));
+				button.setImage(ImageUtils.changeBrightness(inventoryBtnImage, 100));
 			}
 			public void exited(Button button) {
-				button.setImage(image);
+				button.setImage(inventoryBtnImage);
 			}
 			public void pressed(Button button) {
-				button.setImage(ImageUtils.changeBrightness(image, -100));
+				button.setImage(ImageUtils.changeBrightness(inventoryBtnImage, -100));
 			}
 			public void released(Button button) {
-				button.setImage(image);
+				button.setImage(inventoryBtnImage);
 			}
 		});
-		panel.addComponent(buttonImage);
+		panel.addComponent(inventoryBtn);
 		
-		//player default attributes
-		//experience = 0;
+		//TODO Temp display of tile selected 
+		selectedTileLbl = new Label(new Vector2i(12, 400), (selectedTile != null ? selectedTile.name : "") );
+		selectedTileLbl.setColour(0xff000000);
+		selectedTileLbl.setFont(new Font("Courier New", Font.PLAIN, 12));
+		panel.addComponent(selectedTileLbl);
+				
+//		testBtn = new Button(new Vector2i(12, 310), new Vector2i(120, 40), new IHUDActionListener() {
+//			public void execute() {
+//				System.out.println("Button pressed");
+//			}
+//		});
+//		testBtn.setHUDButtonListener(new HUDButtonListener() {
+//			public void pressed(Button testBtn) {
+//				super.pressed(testBtn);
+//				testBtn.executeAction();
+//				testBtn.ignoreNextPress();
+//			}
+//		});
+//		testBtn.setText("A Button");
+//		panel.addComponent(testBtn);
 	}
 	
 	public void update() {		
 		if(walking) animatedSprite.update();
 		else animatedSprite.setFrame(0);
 		
-		double speed = 1.4;
+		//keep player at whole numbers else it messes up the scrolling :(
+		double speed = 1.0;
 		if(clickRate > 0) clickRate--;
 		if(fireRate > 0) fireRate--;
 		double xa = 0, ya = 0;
@@ -166,7 +187,7 @@ public class Player extends Mob {
 		
 		clear();
 		updateFireProjectile();
-		getTileClicked();
+		breakTileItem();
 		
 		
 		if (xa != 0 || ya != 0)  {
@@ -175,6 +196,8 @@ public class Player extends Mob {
 		} else {
 			walking = false;
 		}
+		
+		playerName.setText(getName());
 		//expBar.setProgress(experience / 100.0);
 	}
 	
@@ -258,28 +281,52 @@ public class Player extends Mob {
 				fireProjectile(x, y, fireDirection);
 				fireRate = ArrowProjectile.FIRE_RATE;	
 			}
-		}
+		} 
 	}
-	//TODO basic editor need logic for tiles that can be placed by player and where they can be placed. 
-	//TODO And then WHAT can grow on them.
-	private void getTileClicked() {
+	private void breakTileItem() {
 		if(Main.State == STATE.PLAY) {
+			if(Mouse.getX() > 780) return;
 			if(Mouse.getMouseButton() == 1 && clickRate <= 0) {
 				int xMouse = (int)((getX() - Main.getRawWidth() / 2) + Mouse.getX() / Main.getRawScale()) >> 4;
 				int yMouse = (int)((getY() - Main.getRawHeight() / 2) + Mouse.getY() / Main.getRawScale()) >> 4;
-		
 				selectedTile = level.getTile(xMouse, yMouse);
 				clickRate = Mouse.CLICK_RATE;
-				level.setTile(xMouse, yMouse, selectedTile); 
+				int xPlayer = (int)level.getPlayerAt(0).getX() >> 4;	
+				int yPlayer = (int)level.getPlayerAt(0).getY() >> 4;
+				int xDist = Math.abs(xPlayer - xMouse);
+				int yDist = Math.abs(yPlayer - yMouse);
+				if (xDist < 3 && yDist < 3) {
+					selectedTileLbl.text = setSelectedTileLbl(selectedTile.name);
+					if(selectedTile.breakable() == true) {
+						level.setTile(xMouse, yMouse, selectedTile.getReplacementTile()); 
+						//Animate an item drop / player animation
+					}
+				}
 			}
 		}
 	}
 	
+	public static boolean modifyCash(int amount) {
+		if(Cash + amount >= 0) {
+			Cash += amount;
+			return true;
+		}
+		return false;
+	}
 	
-	public String getName() {
+	public static String getName() {
 		return name;
 	}
 
-	
+	public static void setName(String name) {
+		Player.name = name;
+	}
+
+	public String getSelectedTileLbl() {
+		return selectedTileLbl.text;
+	}
+	public String setSelectedTileLbl(String tileName) {
+		return selectedTileLbl.text = tileName;
+	}
 	
 }

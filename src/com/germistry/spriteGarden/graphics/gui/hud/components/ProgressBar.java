@@ -1,11 +1,11 @@
-package com.germistry.spriteGarden.graphics.hud.components;
+package com.germistry.spriteGarden.graphics.gui.hud.components;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import org.w3c.dom.ranges.RangeException;
 
-import com.germistry.spriteGarden.graphics.hud.HUDComponent;
+import com.germistry.spriteGarden.graphics.gui.hud.HUDComponent;
 import com.germistry.spriteGarden.utils.Vector2i;
 
 public class ProgressBar extends HUDComponent {

@@ -10,6 +10,7 @@ public class PlainMidGreenGrassTile extends Tile {
 		super(sprite);
 		this.name = "Plain Mid Green Grass";
 		this.mapColour = Tile.col_plainMidGreenGrass;
+		this.tileId = 10;
 	}
 
 	public void render(int x, int y, Screen screen) {

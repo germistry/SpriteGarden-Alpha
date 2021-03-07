@@ -10,6 +10,7 @@ public class WallTile1 extends Tile {
 		super(sprite);
 		this.name = "Wall 1";
 		this.mapColour = Tile.col_wallTile1;
+		this.tileId = 45;
 	}
 
 	public void render(int x, int y, Screen screen) {

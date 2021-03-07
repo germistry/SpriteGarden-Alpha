@@ -10,6 +10,7 @@ public class FertileDirtTile extends Tile {
 		super(sprite);
 		this.name = "Fertile Soil";
 		this.mapColour = Tile.col_fertileDirt;
+		this.tileId = 4;
 	}
 
 	public void render(int x, int y, Screen screen) {

@@ -10,6 +10,7 @@ public class DetailLightSandTile extends Tile{
 		super(sprite);
 		this.name = "Detail Light Sand";
 		this.mapColour = Tile.col_detailLightSand;
+		this.tileId = 13;
 	}
 
 	public void render(int x, int y, Screen screen) {

@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.germistry.spriteGarden.Main;
+import com.germistry.spriteGarden.entity.mob.Player;
 import com.germistry.spriteGarden.graphics.Screen;
 import com.germistry.spriteGarden.input.KeyBuffer;
 import com.germistry.spriteGarden.input.Keyboard;
@@ -16,23 +17,23 @@ public class NewGameMenu extends Menu {
 	String[] options = { 
 			"Play", 
 			"Return to Main",
-			"Save Game" 
+			"Options" 
 			};
 	private int clickRate = 0;
 	private int pressedRate = 0;
 	private BufferedImage image = null;
 	private BufferedImage imageButton= null;
-	private String playerName = "";
+	private String playerName;
 	private KeyBuffer buffer = new KeyBuffer();
 	
 	public NewGameMenu(Keyboard input) {
 		super(input);
 		clickRate = Mouse.CLICK_RATE;
 		pressedRate = Keyboard.PRESSED_RATE;
+		playerName = Player.getName();
 		try {
 			//IMPORTANT!!!! These images need to be type 6 - not 13 like the mob and players sheets, make sure 
-			//in paint.net that these are saved as 32 bit depth!!!!! not a random type!
-			//TODO Background images for other menus 
+			//in paint.net that these are saved as 32 bit depth!!!!! not a random type! 
 			image = ImageIO.read(getClass().getResource("/images/BlankMenuBackground.png"));
 			imageButton = ImageIO.read(getClass().getResource("/images/button.png"));
 		} catch (IOException e) {
@@ -91,6 +92,7 @@ public class NewGameMenu extends Menu {
 		
 		if(x >= 310 && x <= 690) {
 			if(y >= 378 && y <= 424 && Mouse.getMouseButton() == 1 && clickRate <= 0 && !playerName.isEmpty()) {
+				Player.setName(playerName.toUpperCase());
 				Main.State = Main.STATE.PLAY;
 				clickRate = Mouse.CLICK_RATE;
 			}
@@ -113,7 +115,8 @@ public class NewGameMenu extends Menu {
 		screen.renderText("Version Alpha 1.0!", 710, 30, 28, 1, 0xffffff);
 		screen.renderText("New Game", 410, 140, 40, 1, 0xDDFFDB);
 		screen.renderImage(imageButton, 310, 218, imageButton.getWidth(), imageButton.getHeight());
-		screen.renderText(playerName.toUpperCase(), 330, 251, 36, 1, 0x000000);
+		if(playerName != null) 
+			screen.renderText(playerName.toUpperCase(), 330, 251, 36, 1, 0x000000);
 		for(int i = 0; i < options.length; i++) {
 			screen.renderImage(imageButton, 310, 378 + i * 60, imageButton.getWidth(), imageButton.getHeight());
 		}

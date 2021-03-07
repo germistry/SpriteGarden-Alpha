@@ -11,6 +11,7 @@ public class DetailDarkGreenGrassTile extends Tile {
 		super(sprite);
 		this.name = "Detail Dark Green Grass";
 		this.mapColour = Tile.col_detailDarkGreenGrass;
+		this.tileId = 7;
 	}
 
 	public void render(int x, int y, Screen screen) {

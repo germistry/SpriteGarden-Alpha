@@ -1,4 +1,4 @@
-package com.germistry.spriteGarden.graphics.hud;
+package com.germistry.spriteGarden.graphics.gui.hud;
 
 import java.awt.Color;
 import java.awt.Graphics;

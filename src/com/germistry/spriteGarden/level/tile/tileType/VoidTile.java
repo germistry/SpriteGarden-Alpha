@@ -9,6 +9,7 @@ public class VoidTile extends Tile {
 	public VoidTile(Sprite sprite) {
 		super(sprite);
 		this.name = "Void";
+		this.tileId = 0;
 	}
 
 	public void render(int x, int y, Screen screen) {

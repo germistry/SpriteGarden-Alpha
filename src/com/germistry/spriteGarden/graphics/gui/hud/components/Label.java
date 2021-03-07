@@ -1,11 +1,10 @@
-package com.germistry.spriteGarden.graphics.hud.components;
+package com.germistry.spriteGarden.graphics.gui.hud.components;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
-
-import com.germistry.spriteGarden.graphics.hud.HUDComponent;
+import com.germistry.spriteGarden.graphics.gui.hud.HUDComponent;
 import com.germistry.spriteGarden.utils.Vector2i;
 
 public class Label extends HUDComponent {
@@ -35,6 +34,10 @@ public class Label extends HUDComponent {
 	
 	public Label setFont(Font font) {
 		this.font = font;
+		return this;
+	}
+	public Label setText(String text) {
+		this.text = text;
 		return this;
 	}
 	

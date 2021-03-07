@@ -11,6 +11,7 @@ public class GardenGateTile extends Tile{
 		super(sprite);
 		this.name = "Garden Gate";
 		this.mapColour = Tile.col_gardenGateTile;
+		this.tileId = 1;
 	}
 
 	public void render(int x, int y, Screen screen) {

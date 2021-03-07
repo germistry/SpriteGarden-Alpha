@@ -67,6 +67,9 @@ public class Sprite {
 	public static Sprite wallBlock3 = new Sprite(16, 1, 16, SpriteSheet.terrain);
 	public static Sprite wallBlock4 = new Sprite(16, 0, 16, SpriteSheet.terrain);
 	
+	//item sprites
+	public static Sprite carrotSeedItem = new Sprite(16, 0, 0, SpriteSheet.items);
+	
 	//void sprite
 	public static Sprite voidSprite = new Sprite(16, 0);
 

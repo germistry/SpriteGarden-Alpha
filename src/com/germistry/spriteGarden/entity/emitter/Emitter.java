@@ -7,7 +7,7 @@ import com.germistry.spriteGarden.level.Level;
 public class Emitter extends Entity {
 
 	public enum Type {
-		PARTICLE, MOB;
+		PARTICLE, MOB, ITEM;
 	}
 	private Type type;
 	
