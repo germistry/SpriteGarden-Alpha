@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 import com.germistry.spriteGarden.Main;
 import com.germistry.spriteGarden.Main.STATE;
+import com.germistry.spriteGarden.entity.items.ItemRock;
 import com.germistry.spriteGarden.entity.projectile.ArrowProjectile;
 import com.germistry.spriteGarden.entity.projectile.Projectile;
 //import com.germistry.spriteGarden.entity.projectile.SparklesProjectile;
@@ -35,7 +36,7 @@ public class Player extends Mob {
 	private int animate = 0;
 	private int fireRate = 0, clickRate = 0;
 	private static String name;
-	public static int Cash;
+	public int cash;
 	//private int experience;  // player will get experience when they sell crop produce? Enough get them to next level - better garden/more money
 	
 	//probably want a 4th frame in animation so maybe 48, 48, 4
@@ -53,6 +54,7 @@ public class Player extends Mob {
 	private Tile selectedTile;
 	private Label selectedTileLbl;
 	private Label playerName;
+	private Label playerCash;
 	//setting a local player, but will change for multiplayer
 	
 	public Player(Keyboard input) {
@@ -65,14 +67,14 @@ public class Player extends Mob {
 		this.y = y;
 		this.input = input;
 		clickRate = Mouse.CLICK_RATE;
-		
-		setupPlayerHUD();
 		setupPlayerAttributes();
+		setupPlayerHUD();
+		
 		
 	}
 	private void setupPlayerAttributes() {
 		fireRate = ArrowProjectile.FIRE_RATE;
-		Cash = 50;
+		addCash(50); 
 		//experience = 0;
 	}
 	private void setupPlayerHUD() {
@@ -133,6 +135,11 @@ public class Player extends Mob {
 			}
 		});
 		panel.addComponent(inventoryBtn);
+		
+		playerCash = new Label(new Vector2i(112, 320), "$ " + String.valueOf(getCash()));
+		playerCash.setColour(0xff27511C);
+		playerCash.setFont(new Font("Courier New", Font.PLAIN, 26));
+		panel.addComponent(playerCash);
 		
 		//TODO Temp display of tile selected 
 		selectedTileLbl = new Label(new Vector2i(12, 400), (selectedTile != null ? selectedTile.name : "") );
@@ -296,22 +303,31 @@ public class Player extends Mob {
 				int xDist = Math.abs(xPlayer - xMouse);
 				int yDist = Math.abs(yPlayer - yMouse);
 				if (xDist < 3 && yDist < 3) {
-					selectedTileLbl.text = setSelectedTileLbl(selectedTile.name);
-					if(selectedTile.breakable() == true) {
-						level.setTile(xMouse, yMouse, selectedTile.getReplacementTile()); 
-						//Animate an item drop / player animation
-					}
+					spawnBrokenTileItem(xMouse, yMouse);
 				}
 			}
 		}
 	}
 	
-	public static boolean modifyCash(int amount) {
-		if(Cash + amount >= 0) {
-			Cash += amount;
-			return true;
+	private void spawnBrokenTileItem(int xMouse, int yMouse) {
+		selectedTileLbl.text = setSelectedTileLbl(selectedTile.name);
+		if(selectedTile.breakable() == true) {
+			int tileId = selectedTile.getTileId();
+			//replaces the selected tile broken with a replacement
+			level.setTile(xMouse, yMouse, selectedTile.getReplacementTile()); 
+			//adds in the item from the tile id, gets removed after a set time limit
+			if (tileId == 32) level.add(new ItemRock(xMouse, yMouse, 500));
 		}
-		return false;
+	}
+	public int getCash() {
+		return cash;
+	}
+	
+	public void addCash(int amount) {
+		cash += amount;
+	}
+	public void subtractCash(int amount) {
+		cash -= amount;
 	}
 	
 	public static String getName() {

@@ -9,6 +9,8 @@ import com.germistry.spriteGarden.entity.mob.Bee;
 import com.germistry.spriteGarden.entity.mob.Kitty;
 import com.germistry.spriteGarden.entity.mob.LadyBeetle;
 import com.germistry.spriteGarden.entity.staticEntities.GardenGate;
+import com.germistry.spriteGarden.entity.staticEntities.Tree;
+//import com.germistry.spriteGarden.entity.staticEntities.Tree;
 
 //TODO next level logic & saving / loading multiple maps
 public class SpawnLevel extends Level {
@@ -31,6 +33,7 @@ public class SpawnLevel extends Level {
 		}
 		levelId = 0;
 		add(new GardenGate(80, 20));
+		add(new Tree(43, 36));
 		for (int i = 0; i < 50; i++) {
 			add(new LadyBeetle((random.nextInt(70) + 30), (random.nextInt(70) + 30)));
 		}

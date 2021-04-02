@@ -69,6 +69,10 @@ public class Sprite {
 	
 	//item sprites
 	public static Sprite carrotSeedItem = new Sprite(16, 0, 0, SpriteSheet.items);
+	public static Sprite rockItem = new Sprite(16, 1, 0, SpriteSheet.items);
+	
+	//other static entities
+	public static Sprite tree = new Sprite(32, 2, 0, SpriteSheet.staticEntities);
 	
 	//void sprite
 	public static Sprite voidSprite = new Sprite(16, 0);

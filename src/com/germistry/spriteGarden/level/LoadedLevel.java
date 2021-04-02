@@ -15,6 +15,7 @@ public class LoadedLevel extends Level {
 		ArrayList<ArrayList<Integer>> tempLayout = new ArrayList<>();
 		try (BufferedReader br = new BufferedReader(new FileReader(mapName))) 
 		{
+			System.out.println("Reading level file ..");
 			String currentLine;
 			while ((currentLine = br.readLine()) != null) {
 				if(currentLine.isEmpty())
@@ -29,6 +30,7 @@ public class LoadedLevel extends Level {
 				}
 				tempLayout.add(row);
 			}	
+			System.out.println("Level file has been read.");
 		}
 		catch (IOException e){
 			e.printStackTrace();

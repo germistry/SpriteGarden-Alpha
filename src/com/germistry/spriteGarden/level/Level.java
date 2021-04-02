@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.germistry.spriteGarden.entity.Entity;
+import com.germistry.spriteGarden.entity.items.Item;
 import com.germistry.spriteGarden.entity.mob.Player;
 import com.germistry.spriteGarden.entity.particle.Particle;
 import com.germistry.spriteGarden.entity.projectile.Projectile;
@@ -26,18 +27,26 @@ public class Level {
 	private int xScroll, yScroll;
 	
 	private Comparator<TileNode> nodeSorter = new Comparator<TileNode>() {
-		@Override
 		public int compare(TileNode node0, TileNode node1) {
 			if(node1.fCost < node0.fCost) return 1;
 			if(node1.fCost > node0.fCost) return -1;
 			return 0;
 		}
-	};
+	}; 
 	
 	private List<Entity> entities = new ArrayList<Entity>();
+	
+	private Comparator<Entity> renderSorter = new Comparator<Entity>() {
+		public int compare(Entity entityA, Entity entityB) {
+			if(entityA.getY() < entityB.getY()) return -1;
+			else return 1;
+		}
+	};
+	
 	private List<Projectile> projectiles = new ArrayList<Projectile>();
 	private List<Particle> particles = new ArrayList<Particle>();
 	private List<Player> players = new ArrayList<Player>();
+	private List<Item> items = new ArrayList<Item>();
 	
 	public static Level spawn = new SpawnLevel("/levelmaps/spawnLevel.png");
 	public static Level mainMenu = new MainMenuLevel("/levelmaps/mainMenuLevel.png");
@@ -63,8 +72,10 @@ public class Level {
 		
 	public void update() {
 		for (int i = 0; i < entities.size(); i++) {
-			entities.get(i).update();
+			Entity e = entities.get(i);
+			e.update();
 		}
+		entities.sort(renderSorter);
 		for (int i = 0; i < projectiles.size(); i++) {
 			projectiles.get(i).update();
 		}
@@ -73,6 +84,9 @@ public class Level {
 		}
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).update();
+		}
+		for (int i = 0; i < items.size(); i++) {
+			items.get(i).update();
 		}
 	}
 	
@@ -114,6 +128,9 @@ public class Level {
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).render(screen);
 		}
+		for (int i = 0; i < items.size(); i++) {
+			items.get(i).render(screen);
+		}
 		remove();	
 	}
 	
@@ -125,6 +142,8 @@ public class Level {
 			projectiles.add((Projectile) entity);
 		} else if (entity instanceof Player) {
 			players.add((Player) entity);
+		} else if (entity instanceof Item) {
+			items.add((Item) entity);
 		} else {
 			entities.add(entity); 
 		}
@@ -147,6 +166,9 @@ public class Level {
 		}
 		for (int i = 0; i < players.size(); i++) {
 			if(players.get(i).isRemoved()) players.remove(i);
+		}
+		for (int i = 0; i < items.size(); i++) {
+			if(items.get(i).isRemoved()) items.remove(i);
 		}
 	}
 	
@@ -224,6 +246,10 @@ public class Level {
 	public List<Player> getPlayers() {
 		return players;
 	}
+	
+	public List<Item> getItems() {
+		return items;
+	}
 	public Player getPlayerAt(int index) {
 		return players.get(index);
 	}
@@ -268,65 +294,154 @@ public class Level {
 		return result;
 	}
 	
-	//TODO change this get method to make more efficient, perhaps a switch, but keep static colour map in tiles as that is handy
 	public Tile getTile(int x, int y) {
 		if (x < 0 || y < 0 || x >= width || y >= height) return Tile.voidTile;
-		if (tiles[x + y * width] == Tile.col_gardenGateTile || tiles[x + y * width] == Tile.id_gardenGateTile) return Tile.gardenGateTile;
-		if (tiles[x + y * width] == Tile.col_plainLightSand) return Tile.plainLightSand;
-		if (tiles[x + y * width] == Tile.col_detailLightSand) return Tile.detailLightSand;
-		if (tiles[x + y * width] == Tile.col_pittedLightSand) return Tile.pittedLightSand;
-		
-		if (tiles[x + y * width] == Tile.col_plainDarkGreenGrass) return Tile.plainDarkGreenGrass;
-		if (tiles[x + y * width] == Tile.col_detailDarkGreenGrass) return Tile.detailDarkGreenGrass;
-		if (tiles[x + y * width] == Tile.col_weedDarkGreenGrass) return Tile.weedDarkGreenGrass;
-		
-		if (tiles[x + y * width] == Tile.col_plainMidGreenGrass) return Tile.plainMidGreenGrass;
-		if (tiles[x + y * width] == Tile.col_detailMidGreenGrass) return Tile.detailMidGreenGrass;
-		if (tiles[x + y * width] == Tile.col_weedMidGreenGrass) return Tile.weedMidGreenGrass;
-		
-		if (tiles[x + y * width] == Tile.col_dirtPatch || tiles[x + y * width] == Tile.id_dirtPatch) return Tile.dirtPatch;
-		if (tiles[x + y * width] == Tile.col_detailDirtPatch || tiles[x + y * width] == Tile.id_detailDirtPatch) return Tile.detailDirtPatch;
-		if (tiles[x + y * width] == Tile.col_pittedDirtPatch || tiles[x + y * width] == Tile.id_pittedDirtPatch) return Tile.pittedDirtPatch;
-		if (tiles[x + y * width] == Tile.col_weedDirtPatch || tiles[x + y * width] == Tile.id_weedDirtPatch) return Tile.weedDirtPatch;
-		if (tiles[x + y * width] == Tile.col_fertileDirt || tiles[x + y * width] == Tile.id_fertileDirt) return Tile.fertileDirt;
-		
-		if (tiles[x + y * width] == Tile.col_midGrGrassDirtEdgeTop) return Tile.midGrGrassDirtEdgeTop;
-		if (tiles[x + y * width] == Tile.col_midGrGrassDirtEdgeBase) return Tile.midGrGrassDirtEdgeBase;
-		if (tiles[x + y * width] == Tile.col_midGrGrassDirtEdgeLeft) return Tile.midGrGrassDirtEdgeLeft;
-		if (tiles[x + y * width] == Tile.col_midGrGrassDirtEdgeRight) return Tile.midGrGrassDirtEdgeRight;
-		if (tiles[x + y * width] == Tile.col_midGrGrassFertDirtEdgeLeft) return Tile.midGrGrassFertDirtEdgeLeft;
-		if (tiles[x + y * width] == Tile.col_midGrGrassFertDirtEdgeRight) return Tile.midGrGrassFertDirtEdgeRight;
-		if (tiles[x + y * width] == Tile.col_midGrGrassDirtCornerTL) return Tile.midGrGrassDirtCornerTL;
-		if (tiles[x + y * width] == Tile.col_midGrGrassDirtCornerBL) return Tile.midGrGrassDirtCornerBL;
-		if (tiles[x + y * width] == Tile.col_midGrGrassDirtCornerTR) return Tile.midGrGrassDirtCornerTR;
-		if (tiles[x + y * width] == Tile.col_midGrGrassDirtCornerBR) return Tile.midGrGrassDirtCornerBR;
-		
-		if (tiles[x + y * width] == Tile.col_midGrGrassLSandEdgeTop) return Tile.midGrGrassLSandEdgeTop;
-		if (tiles[x + y * width] == Tile.col_midGrGrassLSandEdgeBase) return Tile.midGrGrassLSandEdgeBase;
-		if (tiles[x + y * width] == Tile.col_midGrGrassLSandEdgeLeft) return Tile.midGrGrassLSandEdgeLeft;
-		if (tiles[x + y * width] == Tile.col_midGrGrassLSandEdgeRight) return Tile.midGrGrassLSandEdgeRight;
-		if (tiles[x + y * width] == Tile.col_midGrGrassLSandCornerTL) return Tile.midGrGrassLSandCornerTL;
-		if (tiles[x + y * width] == Tile.col_midGrGrassLSandCornerBL) return Tile.midGrGrassLSandCornerBL;
-		if (tiles[x + y * width] == Tile.col_midGrGrassLSandCornerTR) return Tile.midGrGrassLSandCornerTR;
-		if (tiles[x + y * width] == Tile.col_midGrGrassLSandCornerBR) return Tile.midGrGrassLSandCornerBR;
-		if (tiles[x + y * width] == Tile.col_lgtSandMidGrGrassCornerTL) return Tile.lgtSandMidGrGrassCornerTL;
-		if (tiles[x + y * width] == Tile.col_lgtSandMidGrGrassCornerBL) return Tile.lgtSandMidGrGrassCornerBL;
-		if (tiles[x + y * width] == Tile.col_lgtSandMidGrGrassCornerTR) return Tile.lgtSandMidGrGrassCornerTR;
-		if (tiles[x + y * width] == Tile.col_lgtSandMidGrGrassCornerBR) return Tile.lgtSandMidGrGrassCornerBR;
-		
-		if (tiles[x + y * width] == Tile.col_pinkTulipMidGrGrass) return Tile.pinkTulipMidGrGrass;
-		if (tiles[x + y * width] == Tile.col_orangeTulipMidGrGrass) return Tile.orangeTulipMidGrGrass;
-		if (tiles[x + y * width] == Tile.col_purpleTulipMidGrGrass) return Tile.purpleTulipMidGrGrass;
-		if (tiles[x + y * width] == Tile.col_whiteDaisyMidGrGrass) return Tile.whiteDaisyMidGrGrass;
-		if (tiles[x + y * width] == Tile.col_rockMidGrGrass) return Tile.rockMidGrGrass;
-		if (tiles[x + y * width] == Tile.col_smallPlant1MidGrGrass) return Tile.smallPlant1MidGrGrass;
-		if (tiles[x + y * width] == Tile.col_smallPlant2MidGrGrass) return Tile.smallPlant2MidGrGrass;
-		
-		if (tiles[x + y * width] == Tile.col_wallTile1) return Tile.wallTile1;
-		if (tiles[x + y * width] == Tile.col_wallTile2) return Tile.wallTile2;
-		if (tiles[x + y * width] == Tile.col_wallTile3) return Tile.wallTile3;
-		if (tiles[x + y * width] == Tile.col_wallTile4) return Tile.wallTile4;
-				
+		switch(tiles[x + y * width]) {
+			case Tile.col_gardenGateTile:
+			case Tile.id_gardenGateTile:
+				return Tile.gardenGateTile;
+			case Tile.col_plainLightSand:
+			case Tile.id_plainLightSand:
+				return Tile.plainLightSand;
+			case Tile.col_detailLightSand:
+			case Tile.id_detailLightSand:
+				return Tile.detailLightSand;
+			case Tile.col_pittedLightSand: 
+			case Tile.id_pittedLightSand:
+				return Tile.pittedLightSand;
+			case Tile.col_plainDarkGreenGrass:
+			case Tile.id_plainDarkGreenGrass:
+				return Tile.plainDarkGreenGrass;
+			case Tile.col_detailDarkGreenGrass:
+			case Tile.id_detailDarkGreenGrass:
+				return Tile.detailDarkGreenGrass;
+			case Tile.col_weedDarkGreenGrass:
+			case Tile.id_weedDarkGreenGrass:	
+				return Tile.weedDarkGreenGrass;
+			case Tile.col_plainMidGreenGrass:
+			case Tile.id_plainMidGreenGrass:
+				return Tile.plainMidGreenGrass;
+			case Tile.col_detailMidGreenGrass:
+			case Tile.id_detailMidGreenGrass:	
+				return Tile.detailMidGreenGrass;
+			case Tile.col_weedMidGreenGrass: 
+			case Tile.id_weedMidGreenGrass:
+				return Tile.weedMidGreenGrass;
+			case Tile.col_dirtPatch: 
+			case Tile.id_dirtPatch:
+				return Tile.dirtPatch;
+			case Tile.col_detailDirtPatch: 
+			case Tile.id_detailDirtPatch: 
+				return Tile.detailDirtPatch;
+			case Tile.col_pittedDirtPatch: 
+			case Tile.id_pittedDirtPatch:
+				return Tile.pittedDirtPatch;
+			case Tile.col_weedDirtPatch: 
+			case Tile.id_weedDirtPatch:
+				return Tile.weedDirtPatch;
+			case Tile.col_fertileDirt: 
+			case Tile.id_fertileDirt:
+				return Tile.fertileDirt;
+			case Tile.col_midGrGrassDirtEdgeTop:
+			case Tile.id_midGrGrassDirtEdgeTop:
+				return Tile.midGrGrassDirtEdgeTop;
+			case Tile.col_midGrGrassDirtEdgeBase:
+			case Tile.id_midGrGrassDirtEdgeBase:	
+				return Tile.midGrGrassDirtEdgeBase;
+			case Tile.col_midGrGrassDirtEdgeLeft:
+			case Tile.id_midGrGrassDirtEdgeLeft:	
+				return Tile.midGrGrassDirtEdgeLeft;
+			case Tile.col_midGrGrassDirtEdgeRight:
+			case Tile.id_midGrGrassDirtEdgeRight:	
+				return Tile.midGrGrassDirtEdgeRight;
+			case Tile.col_midGrGrassFertDirtEdgeLeft:
+			case Tile.id_midGrGrassFertDirtEdgeLeft:	
+				return Tile.midGrGrassFertDirtEdgeLeft;
+			case Tile.col_midGrGrassFertDirtEdgeRight:
+			case Tile.id_midGrGrassFertDirtEdgeRight:	
+				return Tile.midGrGrassFertDirtEdgeRight;
+			case Tile.col_midGrGrassDirtCornerTL:
+			case Tile.id_midGrGrassDirtCornerTL:	
+				return Tile.midGrGrassDirtCornerTL;
+			case Tile.col_midGrGrassDirtCornerBL:
+			case Tile.id_midGrGrassDirtCornerBL:	
+				return Tile.midGrGrassDirtCornerBL;
+			case Tile.col_midGrGrassDirtCornerTR:
+			case Tile.id_midGrGrassDirtCornerTR:	
+				return Tile.midGrGrassDirtCornerTR;
+			case Tile.col_midGrGrassDirtCornerBR:
+			case Tile.id_midGrGrassDirtCornerBR:	
+				return Tile.midGrGrassDirtCornerBR;
+			case Tile.col_midGrGrassLSandEdgeTop:
+			case Tile.id_midGrGrassLSandEdgeTop:	
+				return Tile.midGrGrassLSandEdgeTop;
+			case Tile.col_midGrGrassLSandEdgeBase:
+			case Tile.id_midGrGrassLSandEdgeBase:	
+				return Tile.midGrGrassLSandEdgeBase;
+			case Tile.col_midGrGrassLSandEdgeLeft:
+			case Tile.id_midGrGrassLSandEdgeLeft:	
+				return Tile.midGrGrassLSandEdgeLeft;
+			case Tile.col_midGrGrassLSandEdgeRight:
+			case Tile.id_midGrGrassLSandEdgeRight:	
+				return Tile.midGrGrassLSandEdgeRight;
+			case Tile.col_midGrGrassLSandCornerTL:
+			case Tile.id_midGrGrassLSandCornerTL:	
+				return Tile.midGrGrassLSandCornerTL;
+			case Tile.col_midGrGrassLSandCornerBL:
+			case Tile.id_midGrGrassLSandCornerBL:	
+				return Tile.midGrGrassLSandCornerBL;
+			case Tile.col_midGrGrassLSandCornerTR:
+			case Tile.id_midGrGrassLSandCornerTR:	
+				return Tile.midGrGrassLSandCornerTR;
+			case Tile.col_midGrGrassLSandCornerBR:
+			case Tile.id_midGrGrassLSandCornerBR:	
+				return Tile.midGrGrassLSandCornerBR;
+			case Tile.col_lgtSandMidGrGrassCornerTL:
+			case Tile.id_lightSandMidGrGrassCornerTL:	
+				return Tile.lgtSandMidGrGrassCornerTL;
+			case Tile.col_lgtSandMidGrGrassCornerBL:
+			case Tile.id_lightSandMidGrGrassCornerBL:	
+				return Tile.lgtSandMidGrGrassCornerBL;
+			case Tile.col_lgtSandMidGrGrassCornerTR:
+			case Tile.id_lightSandMidGrGrassCornerTR:	
+				return Tile.lgtSandMidGrGrassCornerTR;
+			case Tile.col_lgtSandMidGrGrassCornerBR:
+			case Tile.id_lightSandMidGrGrassCornerBR:	
+				return Tile.lgtSandMidGrGrassCornerBR;
+			case Tile.col_pinkTulipMidGrGrass:
+			case Tile.id_pinkTulipMidGrGrass:	
+				return Tile.pinkTulipMidGrGrass;
+			case Tile.col_orangeTulipMidGrGrass:
+			case Tile.id_orangeTulipMidGrGrass:
+				return Tile.orangeTulipMidGrGrass;
+			case Tile.col_purpleTulipMidGrGrass:
+			case Tile.id_purpleTulipMidGrGrass:
+				return Tile.purpleTulipMidGrGrass;
+			case Tile.col_whiteDaisyMidGrGrass:
+			case Tile.id_whiteDaisyMidGrGrass:
+				return Tile.whiteDaisyMidGrGrass;
+			case Tile.col_rockMidGrGrass:
+			case Tile.id_RockMidGrGrass:	
+				return Tile.rockMidGrGrass;
+			case Tile.col_smallPlant1MidGrGrass:
+			case Tile.id_SmallPlant1MidGrGrass:	
+				return Tile.smallPlant1MidGrGrass;
+			case Tile.col_smallPlant2MidGrGrass:
+			case Tile.id_SmallPlant2MidGrGrass:
+				return Tile.smallPlant2MidGrGrass;
+			case Tile.col_wallTile1:
+			case Tile.id_wallTile1:	
+				return Tile.wallTile1;
+			case Tile.col_wallTile2:
+			case Tile.id_wallTile2:	
+				return Tile.wallTile2;
+			case Tile.col_wallTile3:
+			case Tile.id_wallTile3:		
+				return Tile.wallTile3;
+			case Tile.col_wallTile4:
+			case Tile.id_wallTile4:	
+				return Tile.wallTile4;
+		}
 		return Tile.voidTile;
 	}
 	

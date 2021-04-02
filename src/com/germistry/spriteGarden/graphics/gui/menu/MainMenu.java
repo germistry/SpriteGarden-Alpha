@@ -9,8 +9,6 @@ import com.germistry.spriteGarden.Main;
 import com.germistry.spriteGarden.graphics.Screen;
 import com.germistry.spriteGarden.input.Keyboard;
 import com.germistry.spriteGarden.input.Mouse;
-import com.germistry.spriteGarden.level.Level;
-import com.germistry.spriteGarden.utils.MapUtils;
 
 public class MainMenu extends Menu {
 	

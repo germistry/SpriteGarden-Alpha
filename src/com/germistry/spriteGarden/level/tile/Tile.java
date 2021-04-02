@@ -59,6 +59,39 @@ public class Tile {
 	protected int mapColour;
 	protected int tileId;
 
+	public Tile(Sprite sprite) {
+		this.sprite = sprite;
+	}
+	
+	public void render(int x, int y, Screen screen) {
+	}
+	
+	public boolean solid() {
+		return false;
+	}
+
+	public boolean growable() {
+		return false;
+	}
+	public boolean breakable() {
+		return false;
+	}
+	public Tile getReplacementTile() {
+		return this;
+	}
+	
+	public int getMapColour() {
+		return mapColour;
+	}
+
+	public void setMapColour(int mapColour) {
+		this.mapColour = mapColour;
+	}
+
+	public int getTileId() {
+		return tileId;
+	}
+
 	//base tiles & void tile
 	public static Tile gardenGateTile = new GardenGateTile(Sprite.gardenGateTile);	
 	public static Tile plainLightSand = new PlainLightSandTile(Sprite.plainLightSand);
@@ -119,6 +152,7 @@ public class Tile {
 	
 	public static Tile voidTile = new VoidTile(Sprite.voidSprite);
 	
+	//tile id finals
 	public static final int id_voidTile = 0;
 	public static final int id_gardenGateTile = 1;
 	public static final int id_detailDirtPatch = 2;
@@ -126,21 +160,60 @@ public class Tile {
 	public static final int id_fertileDirt = 4;
 	public static final int id_pittedDirtPatch = 5;
 	public static final int id_weedDirtPatch = 6;
+	public static final int id_detailDarkGreenGrass = 7;
+	public static final int id_detailMidGreenGrass = 8;
+	public static final int id_plainDarkGreenGrass = 9;
+	public static final int id_plainMidGreenGrass = 10;
+	public static final int id_weedDarkGreenGrass = 11;
+	public static final int id_weedMidGreenGrass = 12;
+	public static final int id_detailLightSand = 13;
+	public static final int id_pittedLightSand = 14;
+	public static final int id_plainLightSand = 15;
+	public static final int id_midGrGrassDirtCornerBL = 16;
+	public static final int id_midGrGrassDirtCornerBR = 17;
+	public static final int id_midGrGrassDirtCornerTL = 18;
+	public static final int id_midGrGrassDirtCornerTR = 19;
+	public static final int id_midGrGrassDirtEdgeBase = 20;
+	public static final int id_midGrGrassDirtEdgeLeft = 21;
+	public static final int id_midGrGrassDirtEdgeRight = 22;
+	public static final int id_midGrGrassDirtEdgeTop = 23;
+	public static final int id_midGrGrassFertDirtEdgeLeft = 24;
+	public static final int id_midGrGrassFertDirtEdgeRight = 25;
+	public static final int id_orangeTulipMidGrGrass = 26;
+	public static final int id_pinkTulipMidGrGrass = 27;
+	public static final int id_purpleTulipMidGrGrass = 28;
+	public static final int id_whiteDaisyMidGrGrass = 29;
+	public static final int id_SmallPlant1MidGrGrass = 30;
+	public static final int id_SmallPlant2MidGrGrass = 31; 
+	public static final int id_RockMidGrGrass = 32;
+	public static final int id_lightSandMidGrGrassCornerBL = 33;
+	public static final int id_lightSandMidGrGrassCornerBR = 34;
+	public static final int id_lightSandMidGrGrassCornerTL = 35;
+	public static final int id_lightSandMidGrGrassCornerTR = 36;
+	public static final int id_midGrGrassLSandCornerBL = 37;
+	public static final int id_midGrGrassLSandCornerBR = 38;
+	public static final int id_midGrGrassLSandCornerTL = 39;
+	public static final int id_midGrGrassLSandCornerTR = 40;
+	public static final int id_midGrGrassLSandEdgeBase = 41;
+	public static final int id_midGrGrassLSandEdgeLeft = 42;
+	public static final int id_midGrGrassLSandEdgeRight = 43;
+	public static final int id_midGrGrassLSandEdgeTop = 44;
+	public static final int id_wallTile1 = 45;
+	public static final int id_wallTile2 = 46;
+	public static final int id_wallTile3 = 47;
+	public static final int id_wallTile4 = 48;
 	
 	//colour map finals - SPAWN MAP
 	public static final int col_gardenGateTile = 0xff000010;
 	public static final int col_plainLightSand = 0xffB2AA48;
 	public static final int col_detailLightSand = 0xff8E742D;
 	public static final int col_pittedLightSand = 0xff473B16;
-	
 	public static final int col_plainMidGreenGrass = 0xff4D8D21;
 	public static final int col_detailMidGreenGrass = 0xff275000;
 	public static final int col_weedMidGreenGrass = 0xff6BC62F;
-	
 	public static final int col_plainDarkGreenGrass = 0xff236826;
 	public static final int col_detailDarkGreenGrass = 0xff063A05;
 	public static final int col_weedDarkGreenGrass = 0xff28A62B;
-	
 	public static final int col_dirtPatch = 0xff885C3C;
 	public static final int col_detailDirtPatch = 0xff5A3428;
 	public static final int col_pittedDirtPatch = 0xff744A33;
@@ -156,7 +229,6 @@ public class Tile {
 	public static final int col_midGrGrassDirtCornerBL = 0xffCCDA29;
 	public static final int col_midGrGrassDirtCornerTR = 0xffCC9929;
 	public static final int col_midGrGrassDirtCornerBR = 0xffE45E29;
-		
 	public static final int col_midGrGrassLSandEdgeTop = 0xff002658;
 	public static final int col_midGrGrassLSandEdgeBase = 0xff00A858;
 	public static final int col_midGrGrassLSandEdgeLeft = 0xff006458;
@@ -169,7 +241,6 @@ public class Tile {
 	public static final int col_lgtSandMidGrGrassCornerBL = 0xff0087CC;
 	public static final int col_lgtSandMidGrGrassCornerTR = 0xff00A8FF;
 	public static final int col_lgtSandMidGrGrassCornerBR = 0xff00699E;
-	
 	public static final int col_pinkTulipMidGrGrass = 0xffB7004F; 
 	public static final int col_orangeTulipMidGrGrass = 0xffFF6700;
 	public static final int col_purpleTulipMidGrGrass = 0xff9C00EA;
@@ -177,45 +248,12 @@ public class Tile {
 	public static final int col_rockMidGrGrass = 0xff746347;
 	public static final int col_smallPlant1MidGrGrass = 0xff00FF21;
 	public static final int col_smallPlant2MidGrGrass = 0xff003023;
-	
 	public static final int col_wallTile1 = 0xff404040;
 	public static final int col_wallTile2 = 0xffc0c0c0;
 	public static final int col_wallTile3 = 0xff7fc9ff;
 	public static final int col_wallTile4 = 0xff8efdff;
 	
-	public Tile(Sprite sprite) {
-		this.sprite = sprite;
-	}
 	
-	public void render(int x, int y, Screen screen) {
-	}
-	
-	public boolean solid() {
-		return false;
-	}
-
-	public boolean growable() {
-		return false;
-	}
-	public boolean breakable() {
-		return false;
-	}
-	public Tile getReplacementTile() {
-		return this;
-	}
-	
-	public int getMapColour() {
-		return mapColour;
-	}
-
-	public void setMapColour(int mapColour) {
-		this.mapColour = mapColour;
-	}
-
-	public int getTileId() {
-		return tileId;
-	}
-
 	
 	
 	
