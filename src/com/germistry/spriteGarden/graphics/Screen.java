@@ -232,6 +232,7 @@ public class Screen {
 	}
 	
 	//render graphics objects such as text or solid rectangle
+	
 	public void renderText(String text, int x, int y, int size, int style, int colour) {
 		int r = (colour & 0xff0000) >> 16;
 		int g = (colour & 0xff00) >> 8;

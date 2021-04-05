@@ -24,7 +24,6 @@ import com.germistry.spriteGarden.graphics.gui.hud.components.Label;
 import com.germistry.spriteGarden.graphics.gui.hud.components.ProgressBar;
 import com.germistry.spriteGarden.input.Keyboard;
 import com.germistry.spriteGarden.input.Mouse;
-
 import com.germistry.spriteGarden.level.tile.Tile;
 import com.germistry.spriteGarden.utils.ImageUtils;
 
@@ -314,11 +313,14 @@ public class Player extends Mob {
 		if(selectedTile.breakable() == true) {
 			int tileId = selectedTile.getTileId();
 			//replaces the selected tile broken with a replacement
-			level.setTile(xMouse, yMouse, selectedTile.getReplacementTile()); 
+			level.setTile(xMouse, yMouse, selectedTile.getReplacementTile());
 			//adds in the item from the tile id, gets removed after a set time limit
 			if (tileId == 32) level.add(new ItemRock(xMouse, yMouse, 500));
 		}
 	}
+	
+	//TODO Picking up item & sticking it into inventory
+	
 	public int getCash() {
 		return cash;
 	}

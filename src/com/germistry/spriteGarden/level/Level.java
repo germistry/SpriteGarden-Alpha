@@ -33,7 +33,6 @@ public class Level {
 			return 0;
 		}
 	}; 
-	
 	private List<Entity> entities = new ArrayList<Entity>();
 	
 	private Comparator<Entity> renderSorter = new Comparator<Entity>() {
@@ -87,7 +86,7 @@ public class Level {
 		}
 		for (int i = 0; i < items.size(); i++) {
 			items.get(i).update();
-		}
+		}		
 	}
 	
 	
@@ -133,7 +132,7 @@ public class Level {
 		}
 		remove();	
 	}
-	
+		
 	public void add(Entity entity) {
 		entity.init(this);
 		if (entity instanceof Particle) {

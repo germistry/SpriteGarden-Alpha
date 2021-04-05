@@ -162,9 +162,14 @@ public class Main extends Canvas implements Runnable {
 			break;
 		case LOADGAME:
 			level = Level.loadedLevel;	
-			TileCoord playerSpawn = new TileCoord(64, 64);  
-			player = new Player("", playerSpawn.getX(), playerSpawn.getY(), key); 
-			level.add(player);
+			TileCoord playerSpawn = new TileCoord(64, 64); 
+			if(player == null) {
+				player = new Player("", playerSpawn.getX(), playerSpawn.getY(), key); 
+				level.add(player);
+			}
+			else {
+				level.add(player);
+			}
 			State = STATE.PLAY;
 			break;
 		case HOWTOPLAY:

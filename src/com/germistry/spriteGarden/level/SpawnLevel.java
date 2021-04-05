@@ -32,6 +32,7 @@ public class SpawnLevel extends Level {
 			System.out.println("Error: Could not load spawn level image.");
 		}
 		levelId = 0;
+		
 		add(new GardenGate(80, 20));
 		add(new Tree(43, 36));
 		for (int i = 0; i < 50; i++) {
@@ -44,7 +45,7 @@ public class SpawnLevel extends Level {
 			add(new Bee((random.nextInt(70) + 30), (random.nextInt(70) + 30)));
 		}
 		
-		//render entities that player can walk behind after the player
+		//render entities that player can walk behind after the player - render the player init here?
 	}
 	
 }
